@@ -1,16 +1,36 @@
 {
-  "name": "MEGANE_LEARN",
-  "short_name": "ML",
-  "description": "Convertisseur d'unités universel",
+  "name": "MEGANE_LEARN - Convertisseur Universel",
+  "short_name": "MEGANE_LEARN",
+  "description": "Convertisseur d'unités universel - 20 catégories, fonctionne hors ligne, historique et comparaison multi-unités",
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#4f7cff",
   "background_color": "#e8ecf1",
+  "scope": ".",
+  "lang": "fr",
   "icons": [
     {
       "src": "icone-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["utilities", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Nouvelle conversion",
+      "short_name": "Convertir",
+      "description": "Démarrer une nouvelle conversion",
+      "url": ".",
+      "icons": [
+        {
+          "src": "icone-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
