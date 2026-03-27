@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#4f7cff"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="MEGANE_LEARN"/>
+  <meta name="description" content="Convertisseur d'unités universel - 20 catégories, hors ligne, historique, comparaison multi-unités"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <title>Convertisseur - MEGANE_LEARN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- OVERLAY SIDEBAR -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">
+        <i class="fas fa-bolt"></i> MEGANE_LEARN
+      </span>
+    </div>
+
+    <div class="sidebar-body">
+      <div class="dark-toggle-row">
+        <span class="toggle-label"><i class="fas fa-moon"></i> Mode sombre</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkToggle"/>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+      <div class="sidebar-divider"></div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-btn" id="historyBtnSidebar"><i class="fas fa-history"></i> Historique</a>
+        <a href="#" class="sidebar-btn" id="aboutBtnSidebar"><i class="fas fa-info-circle"></i> À propos</a>
+        <a href="#" class="sidebar-btn" id="contactBtnSidebar"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="#" class="sidebar-btn" id="faqBtnSidebar"><i class="fas fa-question-circle"></i> FAQ</a>
+        <a href="#" class="sidebar-btn" id="helpBtnSidebar"><i class="fas fa-life-ring"></i> Aide</a>
+        <a href="#" class="sidebar-btn" id="privacyBtnSidebar"><i class="fas fa-lock"></i> Confidentialité</a>
+      </nav>
+      <div class="favorites-section" id="favoritesSection"></div>
+    </div>
+  </aside>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="circuit-title"><i class="fas fa-exchange-alt"></i> Convertisseur d'unités</span>
+      <button class="logo-btn" id="logoBtn">ML</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+    <!-- Contenu principal : convertisseur -->
+    <div id="converterView">
+      <!-- CADRE 1 : SORTIE (RÉSULTAT) - BLEU -->
+      <div class="converter-card output-card">
+        <div class="card-header" id="outputHeader">
+          <i class="fas fa-arrow-right-to-bracket"></i> Résultat
+          <div class="header-actions">
+            <button class="header-action-btn" id="copyResultBtn" title="Copier la conversion">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button class="header-action-btn" id="compareBtn" title="Comparer avec d'autres unités">
+              <i class="fas fa-chart-simple"></i>
+            </button>
+          </div>
+        </div>
+        <div class="units-scroll" id="outputUnits"></div>
+        
+        <!-- Zone d'affichage du résultat (normal ou comparaison) -->
+        <div id="resultDisplayArea">
+          <div class="result-display" id="normalResultDisplay">
+            <span class="result-value" id="resultValue">0</span>
+          </div>
+          <div class="comparison-scroll-container" id="comparisonContainer" style="display: none;">
+            <div class="comparison-scroll" id="comparisonScroll">
+              <!-- Les cartes de comparaison seront injectées ici -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CADRE 2 : ENTRÉE (INPUT) - VERT -->
+      <div class="converter-card input-card">
+        <div class="card-header" id="inputHeader">
+          <i class="fas fa-arrow-left-from-bracket"></i> convert
+          <span class="selected-unit" id="inputSelectedUnit">V</span>
+        </div>
+        <div class="units-scroll" id="inputUnits"></div>
+        <div class="input-group">
+          <input type="number" id="inputValue" class="value-input" value="0" step="any" placeholder="0"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vue historique (cachée par défaut) -->
+    <div id="historyView" style="display: none;">
+      <div class="history-header">
+        <button class="history-back-btn" id="historyBackBtn">
+          <i class="fas fa-arrow-left"></i> Retour
+        </button>
+        <h2 class="history-title"><i class="fas fa-history"></i> Historique des conversions</h2>
+        <button class="history-clear-btn" id="clearHistoryBtn">
+          <i class="fas fa-trash-alt"></i> Tout effacer
+        </button>
+      </div>
+      <div class="history-list" id="historyList">
+        <!-- Les entrées d'historique seront injectées ici -->
+      </div>
+    </div>
+  </main>
+
+  <!-- MODALE DE SÉLECTION DES UNITÉS POUR COMPARAISON -->
+  <div id="compareModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-chart-simple"></i> Sélectionner les unités à comparer</h3>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-info">Choisissez jusqu'à 3 unités (la plus ancienne sera remplacée automatiquement)</p>
+        <div class="units-selection-grid" id="unitsSelectionGrid">
+          <!-- Les unités seront injectées ici -->
+        </div>
+        <div class="selected-count">
+          <span id="selectedCount">0</span> / 3 unités sélectionnées
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-primary" id="validateCompareBtn">Valider</button>
+        <button class="modal-btn modal-btn-secondary" id="cancelCompareBtn">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NAV (scrollable horizontal) -->
+  <footer class="footer-nav">
+    <div class="nav-inner-scroll" id="conversionNav"></div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW enregistré:', reg))
+        .catch(err => console.log('Erreur SW:', err));
+    }
+  </script>
+</body>
+</html>
