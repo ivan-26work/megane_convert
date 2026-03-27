@@ -1087,3 +1087,127 @@ body {
     font-size: 0.75rem;
   }
 }
+/* ═══════════════════════════════════════════════
+   MEGANE_LEARN — modal-fix.css
+   Suppression des ombres sur l'overlay de sélection des unités pour comparaison
+═══════════════════════════════════════════════ */
+
+/* Suppression des ombres sur la modale de comparaison */
+.modal {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: none;
+  border: 1px solid var(--shadow-dark);
+}
+
+/* Suppression des ombres sur les boutons de sélection d'unités */
+.unit-select-btn {
+  box-shadow: none;
+  border: 1px solid var(--shadow-dark);
+  background: var(--surface);
+  transition: all 0.2s ease;
+}
+
+.unit-select-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: none;
+}
+
+.unit-select-btn.selected {
+  background: var(--accent);
+  color: white;
+  box-shadow: none;
+  border-color: var(--accent);
+}
+
+/* Suppression des ombres sur le header de la modale */
+.modal-header {
+  border-bottom: 1px solid var(--shadow-dark);
+  box-shadow: none;
+}
+
+.modal-header h3 {
+  text-shadow: none;
+}
+
+/* Suppression des ombres sur le footer */
+.modal-footer {
+  border-top: 1px solid var(--shadow-dark);
+  box-shadow: none;
+}
+
+/* Boutons de la modale sans ombres */
+.modal-btn {
+  box-shadow: none;
+  border: 1px solid var(--shadow-dark);
+}
+
+.modal-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.modal-btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: none;
+}
+
+.modal-btn-secondary {
+  background: var(--surface);
+  border-color: var(--shadow-dark);
+}
+
+.modal-btn-secondary:hover {
+  transform: translateY(-1px);
+  color: var(--red);
+  box-shadow: none;
+}
+
+/* Bouton de fermeture sans ombre */
+.modal-close {
+  box-shadow: none;
+  border: 1px solid var(--shadow-dark);
+  background: var(--surface);
+}
+
+.modal-close:hover {
+  background: var(--shadow-dark);
+  box-shadow: none;
+}
+
+/* Zone de sélection des unités */
+.units-selection-grid {
+  gap: 8px;
+}
+
+/* Indicateur de sélection sans ombre */
+.selected-count {
+  background: var(--bg);
+  border-radius: 30px;
+  padding: 8px 16px;
+  box-shadow: none;
+  border: 1px solid var(--shadow-dark);
+}
+
+/* Animation de la modale simplifiée */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalFadeIn 0.2s ease;
+   }
