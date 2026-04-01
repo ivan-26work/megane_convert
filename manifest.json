@@ -1,34 +1,107 @@
 {
-  "name": "MEGANE_LEARN - Convertisseur Universel",
+  "name": "MEGANE_LEARN - Convertisseur universel",
   "short_name": "MEGANE_LEARN",
-  "description": "Convertisseur d'unités universel - 20 catégories, fonctionne hors ligne, historique et comparaison multi-unités",
-  "start_url": ".",
+  "description": "Convertisseur d'unités : 20 catégories, historique, comparaison, mode sombre, hors ligne",
+  "start_url": "/megane_convert/",
+  "scope": "/megane_convert/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#4f7cff",
-  "background_color": "#e8ecf1",
-  "scope": ".",
+  "theme_color": "#0066FF",
+  "background_color": "#ffffff",
+  "categories": ["utilities", "productivity", "education"],
   "lang": "fr",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "icone-192.png",
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
-  "categories": ["utilities", "productivity"],
+  "screenshots": [
+    {
+      "src": "screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Écran principal du convertisseur"
+    },
+    {
+      "src": "screenshots/mobile.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Vue mobile du convertisseur"
+    }
+  ],
+  "prefer_related_applications": false,
   "shortcuts": [
     {
       "name": "Nouvelle conversion",
       "short_name": "Convertir",
-      "description": "Démarrer une nouvelle conversion",
-      "url": ".",
+      "description": "Ouvrir le convertisseur",
+      "url": "/megane_convert/",
       "icons": [
         {
-          "src": "icone-192.png",
-          "sizes": "192x192"
+          "src": "icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Historique",
+      "short_name": "Historique",
+      "description": "Voir les dernières conversions",
+      "url": "/megane_convert/?history",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
