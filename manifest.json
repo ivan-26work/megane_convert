@@ -1,56 +1,20 @@
 {
   "name": "MEGANE_LEARN - Convertisseur universel",
   "short_name": "MEGANE_LEARN",
-  "description": "Convertisseur d'unités : 20 catégories, historique, comparaison, mode sombre, hors ligne",
+  "description": "Convertisseur d'unités : 20 catégories, hors ligne, historique, mode sombre",
   "start_url": "/megane_convert/",
   "scope": "/megane_convert/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#0066FF",
   "background_color": "#ffffff",
-  "categories": ["utilities", "productivity", "education"],
   "lang": "fr",
   "dir": "ltr",
+  "categories": ["utilities", "productivity", "education"],
   "icons": [
-    {
-      "src": "icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-384.png",
-      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },
@@ -61,49 +25,22 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "screenshots/desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Écran principal du convertisseur"
-    },
-    {
-      "src": "screenshots/mobile.png",
-      "sizes": "360x640",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Vue mobile du convertisseur"
-    }
-  ],
-  "prefer_related_applications": false,
   "shortcuts": [
-    {
-      "name": "Nouvelle conversion",
-      "short_name": "Convertir",
-      "description": "Ouvrir le convertisseur",
-      "url": "/megane_convert/",
-      "icons": [
-        {
-          "src": "icons/icon-96.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
-    },
     {
       "name": "Historique",
       "short_name": "Historique",
-      "description": "Voir les dernières conversions",
-      "url": "/megane_convert/?history",
-      "icons": [
-        {
-          "src": "icons/icon-96.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
+      "description": "Voir tes dernières conversions",
+      "url": "/megane_convert/?action=history",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Mode sombre",
+      "short_name": "Sombre",
+      "description": "Basculer le thème",
+      "url": "/megane_convert/?action=darkmode",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
