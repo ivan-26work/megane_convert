@@ -8,8 +8,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="MEGANE_LEARN"/>
   <meta name="description" content="Convertisseur d'unités universel - 20 catégories, hors ligne, historique, comparaison multi-unités"/>
-  <link rel="manifest" href="/manifest.json"/>
+  
+  <link rel="manifest" href="manifest.json"/>
   <title>Convertisseur - MEGANE_LEARN</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
@@ -60,9 +62,9 @@
 
   <!-- MAIN CONTENT -->
   <main class="main-content" id="mainContent">
-    <!-- Contenu principal : convertisseur -->
+    <!-- Vue principale convertisseur -->
     <div id="converterView">
-      <!-- CADRE 1 : SORTIE (RÉSULTAT) - BLEU -->
+      <!-- CADRE 1 : SORTIE (RÉSULTAT) -->
       <div class="converter-card output-card">
         <div class="card-header" id="outputHeader">
           <i class="fas fa-arrow-right-to-bracket"></i> Résultat
@@ -77,20 +79,17 @@
         </div>
         <div class="units-scroll" id="outputUnits"></div>
         
-        <!-- Zone d'affichage du résultat (normal ou comparaison) -->
         <div id="resultDisplayArea">
           <div class="result-display" id="normalResultDisplay">
             <span class="result-value" id="resultValue">0</span>
           </div>
           <div class="comparison-scroll-container" id="comparisonContainer" style="display: none;">
-            <div class="comparison-scroll" id="comparisonScroll">
-              <!-- Les cartes de comparaison seront injectées ici -->
-            </div>
+            <div class="comparison-scroll" id="comparisonScroll"></div>
           </div>
         </div>
       </div>
 
-      <!-- CADRE 2 : ENTRÉE (INPUT) - VERT -->
+      <!-- CADRE 2 : ENTRÉE -->
       <div class="converter-card input-card">
         <div class="card-header" id="inputHeader">
           <i class="fas fa-arrow-left-from-bracket"></i> convert
@@ -103,7 +102,7 @@
       </div>
     </div>
 
-    <!-- Vue historique (cachée par défaut) -->
+    <!-- Vue historique -->
     <div id="historyView" style="display: none;">
       <div class="history-header">
         <button class="history-back-btn" id="historyBackBtn">
@@ -114,13 +113,11 @@
           <i class="fas fa-trash-alt"></i> Tout effacer
         </button>
       </div>
-      <div class="history-list" id="historyList">
-        <!-- Les entrées d'historique seront injectées ici -->
-      </div>
+      <div class="history-list" id="historyList"></div>
     </div>
   </main>
 
-  <!-- MODALE DE SÉLECTION DES UNITÉS POUR COMPARAISON -->
+  <!-- MODALE COMPARAISON -->
   <div id="compareModal" class="modal" style="display: none;">
     <div class="modal-content">
       <div class="modal-header">
@@ -129,9 +126,7 @@
       </div>
       <div class="modal-body">
         <p class="modal-info">Choisissez jusqu'à 3 unités (la plus ancienne sera remplacée automatiquement)</p>
-        <div class="units-selection-grid" id="unitsSelectionGrid">
-          <!-- Les unités seront injectées ici -->
-        </div>
+        <div class="units-selection-grid" id="unitsSelectionGrid"></div>
         <div class="selected-count">
           <span id="selectedCount">0</span> / 3 unités sélectionnées
         </div>
@@ -143,7 +138,7 @@
     </div>
   </div>
 
-  <!-- FOOTER NAV (scrollable horizontal) -->
+  <!-- FOOTER NAV -->
   <footer class="footer-nav">
     <div class="nav-inner-scroll" id="conversionNav"></div>
   </footer>
@@ -151,9 +146,9 @@
   <script src="js/script.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW enregistré:', reg))
-        .catch(err => console.log('Erreur SW:', err));
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('✅ SW enregistré :', reg))
+        .catch(err => console.log('❌ Erreur SW :', err));
     }
   </script>
 </body>
