@@ -1,228 +1,135 @@
-/* ═══════════════════════════════════════════════
-   MEGANE_LEARN — Service Worker (sw.js)
-   PWA complète - Cache stratégique pour performances optimales
-   Fonctionne hors ligne, démarrage instantané
-═══════════════════════════════════════════════ */
+// =============================================
+// SERVICE WORKER - MEGANE_LEARN
+// Mode hors ligne optimisé
+// =============================================
 
-const CACHE_NAME = 'megane-learn-v2';
-const OFFLINE_URL = '/offline.html';
+const CACHE_NAME = 'megane-learn-v3';
+const OFFLINE_URL = '/megane_convert/';
 
-// Ressources à mettre en cache dès l'installation
-const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/script.js',
-  '/manifest.json',
-  '/offline.html'
-];
-
-// Ressources optionnelles (chargées au besoin)
-const OPTIONAL_URLS = [
+// Fichiers à mettre en cache (version hors ligne complète)
+const urlsToCache = [
+  '/megane_convert/',
+  '/megane_convert/index.html',
+  '/megane_convert/css/style.css',
+  '/megane_convert/js/script.js',
+  '/megane_convert/manifest.json',
+  '/megane_convert/icons/icon-192.png',
+  '/megane_convert/icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Share+Tech+Mono&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
-  'https://fonts.gstatic.com/'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
 ];
 
-// ──────────────────────────────────────────────
-// INSTALLATION - Pré-cache des ressources essentielles
-// ──────────────────────────────────────────────
-self.addEventListener('install', (event) => {
+// =============================================
+// INSTALLATION : cache des fichiers essentiels
+// =============================================
+self.addEventListener('install', event => {
   console.log('[SW] Installation');
-  
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Pré-cache des ressources');
-        return cache.addAll(PRECACHE_URLS);
+      .then(cache => {
+        console.log('[SW] Mise en cache des fichiers');
+        return cache.addAll(urlsToCache);
       })
-      .then(() => {
-        // Force l'activation immédiate du nouveau SW
-        return self.skipWaiting();
-      })
-      .catch((err) => {
-        console.error('[SW] Erreur de pré-cache:', err);
-      })
+      .catch(err => console.error('[SW] Erreur de cache:', err))
   );
+  // Force l'activation immédiate du nouveau SW
+  self.skipWaiting();
 });
 
-// ──────────────────────────────────────────────
-// ACTIVATION - Nettoyage des anciens caches
-// ──────────────────────────────────────────────
-self.addEventListener('activate', (event) => {
+// =============================================
+// ACTIVATION : nettoyage des anciens caches
+// =============================================
+self.addEventListener('activate', event => {
   console.log('[SW] Activation');
-  
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(keys => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('[SW] Suppression ancien cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
+        keys.filter(key => key !== CACHE_NAME)
+          .map(key => {
+            console.log('[SW] Suppression ancien cache:', key);
+            return caches.delete(key);
+          })
       );
-    }).then(() => {
-      // Prend le contrôle de toutes les pages ouvertes
-      return self.clients.claim();
     })
   );
+  // Prend le contrôle immédiatement
+  return self.clients.claim();
 });
 
-// ──────────────────────────────────────────────
-// STRATÉGIE DE CACHE OPTIMISÉE
-// ──────────────────────────────────────────────
-// - Cache First pour les assets statiques (démarrage rapide)
-// - Network First pour les données (si besoin)
-// - Stale While Revalidate pour les polices
-// ──────────────────────────────────────────────
-
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+// =============================================
+// INTERCEPTION DES REQUÊTES : stratégie "Cache puis réseau"
+// =============================================
+self.addEventListener('fetch', event => {
+  const url = event.request.url;
   
-  // Ignorer les requêtes non GET
-  if (event.request.method !== 'GET') return;
-  
-  // Ignorer les requêtes vers les API externes non essentielles
-  if (url.pathname.includes('/analytics') || url.pathname.includes('/tracking')) {
-    return;
-  }
-  
-  // ── STRATÉGIE 1: Cache First pour les assets locaux
-  // HTML, CSS, JS, manifest, icônes locales
-  if (PRECACHE_URLS.some(path => event.request.url.includes(path)) ||
-      event.request.url.includes('/css/') ||
-      event.request.url.includes('/js/') ||
-      event.request.url.includes('/icons/')) {
-    
+  // Stratégie spéciale pour les fichiers locaux (hors ligne prioritaire)
+  if (url.includes('/megane_convert/') && !url.includes('chrome-extension')) {
     event.respondWith(
       caches.match(event.request)
-        .then((cachedResponse) => {
-          if (cachedResponse) {
-            // Retour du cache immédiatement
-            return cachedResponse;
+        .then(response => {
+          if (response) {
+            console.log('[SW] Cache hit:', url);
+            return response;
           }
-          // Si pas dans cache, récupérer du réseau et mettre en cache
+          // Si pas en cache, on va chercher sur le réseau
           return fetch(event.request)
-            .then((networkResponse) => {
-              if (networkResponse && networkResponse.status === 200) {
-                const responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME)
-                  .then((cache) => {
-                    cache.put(event.request, responseToCache);
-                  });
-              }
+            .then(networkResponse => {
+              // On met en cache la nouvelle ressource pour la prochaine fois
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_NAME).then(cache => {
+                cache.put(event.request, responseClone);
+              });
               return networkResponse;
             })
-            .catch(() => {
-              // Si hors ligne et pas dans cache, retourner page offline
-              if (event.request.destination === 'document') {
+            .catch(err => {
+              console.warn('[SW] Échec réseau, fallback:', url);
+              // Fallback vers la page d'accueil si ressource introuvable
+              if (event.request.mode === 'navigate') {
                 return caches.match(OFFLINE_URL);
               }
-              return new Response('Offline', { status: 503 });
+              return new Response('Contenu non disponible hors ligne', {
+                status: 503,
+                statusText: 'Service Unavailable'
+              });
             });
         })
     );
-    return;
-  }
-  
-  // ── STRATÉGIE 2: Stale While Revalidate pour les polices et CDN
-  // Récupère du cache immédiatement, met à jour en arrière-plan
-  if (event.request.url.includes('fonts.googleapis.com') ||
-      event.request.url.includes('fonts.gstatic.com') ||
-      event.request.url.includes('cdnjs.cloudflare.com')) {
-    
+  } 
+  // Pour les ressources externes (Google Fonts, FontAwesome)
+  else if (url.includes('fonts.googleapis.com') || url.includes('cdnjs.cloudflare.com')) {
     event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request)
-          .then((networkResponse) => {
-            if (networkResponse && networkResponse.status === 200) {
-              const responseToCache = networkResponse.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => {
-                  cache.put(event.request, responseToCache);
-                });
-            }
-            return networkResponse;
-          })
-          .catch((err) => {
-            console.log('[SW] Erreur réseau pour ressource CDN:', err);
-            // Si pas de cache et erreur, retourner null
-            return null;
-          });
-        
-        // Retourne la réponse du cache si disponible, sinon attend le réseau
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetchPromise;
-      })
-    );
-    return;
-  }
-  
-  // ── STRATÉGIE 3: Network First pour les autres requêtes
-  // Essaie le réseau d'abord, fallback sur cache
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        // Mettre en cache les réponses valides
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
+      caches.match(event.request)
+        .then(response => {
+          if (response) return response;
+          return fetch(event.request)
+            .then(networkResponse => {
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_NAME).then(cache => {
+                cache.put(event.request, responseClone);
+              });
+              return networkResponse;
             });
-        }
-        return networkResponse;
-      })
-      .catch(async () => {
-        // Fallback sur le cache
-        const cachedResponse = await caches.match(event.request);
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        
-        // Si c'est une requête de document, retourner la page offline
-        if (event.request.destination === 'document') {
-          return caches.match(OFFLINE_URL);
-        }
-        
-        return new Response('Ressource non disponible hors ligne', {
-          status: 503,
-          statusText: 'Service Unavailable'
-        });
-      })
-  );
+        })
+    );
+  }
+  // Pour tout le reste (requêtes non gérées, on laisse passer)
+  else {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => {
+          return new Response('Ressource non disponible hors ligne', {
+            status: 503
+          });
+        })
+    );
+  }
 });
 
-// ──────────────────────────────────────────────
+// =============================================
 // GESTION DES NOTIFICATIONS (optionnel)
-// ──────────────────────────────────────────────
-self.addEventListener('push', (event) => {
-  const data = event.data ? event.data.json() : {};
-  const options = {
-    body: data.body || 'Nouvelle mise à jour disponible',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
-    vibrate: [200, 100, 200]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification(data.title || 'MEGANE_LEARN', options)
-  );
-});
-
-// ──────────────────────────────────────────────
-// MISE À JOUR - Notification de nouvelle version
-// ──────────────────────────────────────────────
-self.addEventListener('message', (event) => {
-  if (event.data === 'skipWaiting') {
+// =============================================
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-});
-
-// Envoi d'un message aux clients pour indiquer qu'une mise à jour est disponible
-self.addEventListener('controllerchange', () => {
-  console.log('[SW] Nouveau contrôleur actif');
 });
